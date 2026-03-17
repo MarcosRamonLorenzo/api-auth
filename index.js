@@ -9,8 +9,12 @@ const https = require('https');
 const fs = require('fs');
 const helmet = require('helmet');
 const cors = require('cors');
+const moment = require('moment'); 
 
 const TokenHelper = require('./helpers/token.helper'); 
+const PasswordHelper = require('./helpers/pass.helper');
+
+
 
 
 // Declaraciones.
@@ -143,11 +147,104 @@ app.delete('/api/user/:id', auth, (req, res, next) => {
 
 app.get('/api/auth', auth, (req, res, next) => {
     //ver solo email y nombre !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    db.user.find((err, documentos) => {
+    db.user.find({},{email:1,displayName:1,_id:0},(err, usuarios) => {
         if (err) return next(err);
-        res.json(documentos);
+        res.status(200).json({result: 'OK', usuarios });
     });
 })
+
+app.get('/api/auth/me', auth, (req, res, next) => {
+
+    const idUsuario = req.user.id;
+
+    db.user.findOne({ _id: id(idUsuario) }, (err, elemento) => {
+        if (err) return next(err);
+        res.json(elemento);
+    });
+});
+
+app.post('/api/auth/reg', (req, res, next) => {
+    const { displayName, email, password } = req.body;
+
+    if (!displayName || !email || !password) {
+        return res.status(400).json({ result: 'KO', msg: 'Faltan datos' });
+    }
+
+    db.user.findOne({ email: email }, async (err, userExists) => {
+
+        if (err) return next(err);
+        if (userExists) return res.status(400).json({ result: 'KO', msg: 'Email ya registrado' });
+
+        try {
+            const passwordHash = await PasswordHelper.encriptaPassword(password);
+
+            const nuevoUsuario = {
+                displayName,
+                email,
+                password: passwordHash,
+                signupDate: moment().unix() ,
+                lastLogin: moment().unix() 
+            };
+
+            db.user.save(nuevoUsuario, (err, usuarioGuardado) => {
+                if (err) return next(err);
+
+                const token = TokenHelper.creaToken(usuarioGuardado);
+
+                res.status(200).json({
+                    result:"OK",
+                    token: token,
+                    user: usuarioGuardado
+                });
+            });
+        } catch (error) {
+            next(error);
+        }
+    });
+});
+
+
+app.post('/api/auth/login', (req, res, next) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ result: 'KO', msg: 'Debe suministrar un correo y una contraseña' });
+    }
+
+    db.user.findOne({ email: email }, async (err, usuario) => {
+        if (err) return next(err);
+        if (!usuario) {
+            return res.status(401).json({ result: 'KO', msg: 'Usuario o contraseña incorrectos' });
+        }
+
+        try {
+            const esValido = await PasswordHelper.comparaPassword(password, usuario.password);
+
+            if (!esValido) {
+                return res.status(401).json({ result: 'KO', msg: 'Usuario o contraseña incorrectos' });
+            }
+
+            db.user.update(
+                { _id: usuario._id },
+                { $set: { lastLogin:  moment().unix() } },
+                (err) => {
+                    if (err) return next(err);
+
+                    const token = TokenHelper.creaToken(usuario);
+
+                    res.status(200).json({
+                        result: 'OK',
+                        token: token,
+                        usuario: usuario
+                    });
+                }
+            );
+        } catch (error) {
+            next(error);
+        }
+    });
+});;
+
 
 
 
