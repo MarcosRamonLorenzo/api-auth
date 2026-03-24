@@ -14,6 +14,8 @@ const moment = require('moment');
 const TokenHelper = require('./helpers/token.helper'); 
 const PasswordHelper = require('./helpers/pass.helper');
 
+const AuthMiddleware = require('./middlewares/auth.middleware'); 
+
 
 
 
@@ -62,32 +64,13 @@ app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-var auth = (req, res, next) => { // declaramos la función auth
-
-    // recogemos el token de la cabecera “Authorization”
-    const queToken = req.headers.authorization?.split(' ')[1];
-    TokenHelper.decodificaToken( queToken ).then( 
-        userID => {
-            req.user = {
-                token: queToken,
-                id: userID
-            }
-            return next(); // Pasamos el testigo al controlador de la ruta
-        },
-        err => {
-            res.status(401);
-            res.json({ result: 'KO', msg: `No autorizado: ${err.msg}` });
-        }
-    );
-};
-
 
 // --- Rutas de la API ---
 // --- Rutas USER ---
 
 
 // 1. Obtenemos todos los usuarios registrados en el sistema.
-app.get('/api/user', auth, (req, res, next) => {
+app.get('/api/user', AuthMiddleware.auth, (req, res, next) => {
     db.user.find((err, documentos) => {
         if (err) return next(err);
         res.json(documentos);
@@ -95,7 +78,7 @@ app.get('/api/user', auth, (req, res, next) => {
 });
 
 // 2.Obtenemos el usuario indicado por el {id}.
-app.get('/api/user/:id', auth, (req, res, next) => {
+app.get('/api/user/:id', AuthMiddleware.auth, (req, res, next) => {
     db.user.findOne({ _id: id(req.params.id) }, (err, elemento) => {
         if (err) return next(err);
         res.json(elemento);
@@ -104,7 +87,7 @@ app.get('/api/user/:id', auth, (req, res, next) => {
 
 
 // 3.Registramos un nuevo usuario con toda su información.
-app.post('/api/user', auth, (req, res, next) => {
+app.post('/api/user', AuthMiddleware.auth, (req, res, next) => {
     const nuevoElemento = req.body;
 
     db.user.save(nuevoElemento, (err, result) => {
@@ -114,7 +97,7 @@ app.post('/api/user', auth, (req, res, next) => {
 });
 
 // 4. Modificamos el usuario {id}.
-app.put('/api/user/:id', auth, (req, res, next) => {
+app.put('/api/user/:id', AuthMiddleware.auth, (req, res, next) => {
     const userID = req.params.id;
     const elementoNuevo = req.body;
 
@@ -130,7 +113,7 @@ app.put('/api/user/:id', auth, (req, res, next) => {
 });
 
 // 5. Eliminamos el usuario {id}.
-app.delete('/api/user/:id', auth, (req, res, next) => {
+app.delete('/api/user/:id', AuthMiddleware.auth, (req, res, next) => {
     const elementoId = req.params.id;
 
     db.user.remove({ _id: id(elementoId) }, (err, resultado) => {
@@ -145,7 +128,7 @@ app.delete('/api/user/:id', auth, (req, res, next) => {
 
 /*Rutas Auth*/
 
-app.get('/api/auth', auth, (req, res, next) => {
+app.get('/api/auth', AuthMiddleware.auth, (req, res, next) => {
     //ver solo email y nombre !!!!!!!!!!!!!!!!!!!!!!!!!!!!
     db.user.find({},{email:1,displayName:1,_id:0},(err, usuarios) => {
         if (err) return next(err);
@@ -153,7 +136,7 @@ app.get('/api/auth', auth, (req, res, next) => {
     });
 })
 
-app.get('/api/auth/me', auth, (req, res, next) => {
+app.get('/api/auth/me', AuthMiddleware.auth, (req, res, next) => {
 
     const idUsuario = req.user.id;
 
@@ -191,7 +174,7 @@ app.post('/api/auth/reg', (req, res, next) => {
 
                 const token = TokenHelper.creaToken(usuarioGuardado);
 
-                res.status(200).json({
+                res.status(201).json({
                     result:"OK",
                     token: token,
                     user: usuarioGuardado
