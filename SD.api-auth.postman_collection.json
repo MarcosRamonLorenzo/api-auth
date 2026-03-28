@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "6a9339a0-7df3-4758-bde0-d5d78861f2ab",
+		"name": "api-auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51888349",
+		"_collection_link": "https://marcosramonlorenzo-682002.postman.co/workspace/MarcosRam's-Workspace~1c9da3f3-645d-466c-831c-190d54d0f668/collection/51888349-6a9339a0-7df3-4758-bde0-d5d78861f2ab?action=share&source=collection_link&creator=51888349"
+	},
+	"item": [
+		{
+			"name": "/api/user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4100/api/user/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user/${id}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "password1234",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:4100/api/user/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Njc4OTEyMzQ1Njc4OSIsImlhdCI6MTc3MzY5Mjg1NywiZXhwIjoxNzc0Mjk3NjU3fQ.ZNJmoaODxKtbH0EZh0SOdAAdz54ajRRUvlkpuJJAbns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "marcos",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:4100/api/user",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user/${id}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Njc4OTEyMzQ1Njc4OSIsImlhdCI6MTc3MzY5Mjg1NywiZXhwIjoxNzc0Mjk3NjU3fQ.ZNJmoaODxKtbH0EZh0SOdAAdz54ajRRUvlkpuJJAbns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "marcos2@ua.es",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:4100/api/user/69b8811a84951e1b8c19753a",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"user",
+						"69b8811a84951e1b8c19753a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/user/${id}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Njc4OTEyMzQ1Njc4OSIsImlhdCI6MTc3MzY5Mjg1NywiZXhwIjoxNzc0Mjk3NjU3fQ.ZNJmoaODxKtbH0EZh0SOdAAdz54ajRRUvlkpuJJAbns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4100/api/user/69b05820d2f92b23dc54b332",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"user",
+						"69b05820d2f92b23dc54b332"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Njc4OTEyMzQ1Njc4OSIsImlhdCI6MTc3MzY5Mjg1NywiZXhwIjoxNzc0Mjk3NjU3fQ.ZNJmoaODxKtbH0EZh0SOdAAdz54ajRRUvlkpuJJAbns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "marcos",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:4100/api/auth",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/me",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4100/api/auth/69b8811a84951e1b8c19753a",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"auth",
+						"69b8811a84951e1b8c19753a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/reg",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"displayName\":\"marcosRam\",\n    \"email\":\"marcos31@hola.com\",\n    \"password\":\"hola1\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4100/api/auth/reg",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"auth",
+						"reg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2OWMyY2M2NzRmMGE4ZTE5YzA0OTRjYjciLCJpYXQiOjE3NzQzNzM5OTEsImV4cCI6MTc3NDk3ODc5MX0.Ptf3DImX2Z5dstdSOaJvoDfMEM8MuLhLn4bB5MsxPW4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    email:\"hola@hola.com\",\n    password:\"hola1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4100/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4100",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
