@@ -142,7 +142,7 @@ app.get('/api/auth/me', AuthMiddleware.auth, (req, res, next) => {
 
     db.user.findOne({ _id: id(idUsuario) }, (err, elemento) => {
         if (err) return next(err);
-        res.json(elemento);
+        res.json({result: 'OK', usuario:elemento });
     });
 });
 
